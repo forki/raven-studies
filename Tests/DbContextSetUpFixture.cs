@@ -1,9 +1,8 @@
 ﻿using NUnit.Framework;
-using Raven.Bundles.UniqueConstraints;
 using Raven.Client;
 using Raven.Client.Embedded;
 using Raven.Client.UniqueConstraints;
-using Raven.Tests.Helpers;
+using SomeBasicRavenApp.Core;
 using System;
 using System.IO;
 using System.Linq;
@@ -35,6 +34,7 @@ class DbContextSetUpFixture
         }.Tap(s =>
         {
             s.RegisterListener(new UniqueConstraintsStoreListener());
+            s.RegisterListener(new CustomerVersion1ToVersion2Converter());
         });
         store.Initialize();
     }

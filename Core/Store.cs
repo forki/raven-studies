@@ -1,5 +1,6 @@
 ﻿using Raven.Client;
 using Raven.Client.Document;
+using Raven.Client.Listeners;
 using Raven.Client.UniqueConstraints;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace SomeBasicRavenApp.Core
                 DefaultDatabase = "RavenStudies"   // default database
             };
             store.RegisterListener(new UniqueConstraintsStoreListener());
+            store.RegisterListener(new CustomerVersion1ToVersion2Converter());
             store.Initialize(); // initializes document store, by connecting to server and downloading various configurations
 
             return store;
