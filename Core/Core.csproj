@@ -43,10 +43,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Customer.cs" />
+    <Compile Include="Entities\CustomerId.cs" />
     <Compile Include="Entities\Order.cs" />
     <Compile Include="Entities\Product.cs" />
+    <Compile Include="Entities\ProductId.cs" />
     <Compile Include="Extensions\OrderExtensions.cs" />
     <Compile Include="Extensions\ProductExtensions.cs" />
+    <Compile Include="IdentityConverter.cs" />
     <Compile Include="IIdentifiableByString.cs" />
     <Compile Include="Indexes\Customer_ByFirstAndLastName.cs" />
     <Compile Include="Indexes\Product_ByNameAndTagAndDescription.cs" />
