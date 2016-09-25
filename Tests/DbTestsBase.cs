@@ -29,13 +29,14 @@ namespace SomeBasicRavenApp.Tests
         {
             documentStore.RegisterListener(new UniqueConstraintsStoreListener());
             documentStore.Conventions.IdentityTypeConvertors.Add(new CustomerIdentityConverter());
-            //ProductIdentityConverter
+            documentStore.Conventions.IdentityTypeConvertors.Add(new ProductIdentityConverter());
             base.ModifyStore(documentStore);
         }
         protected override void ModifyStore(EmbeddableDocumentStore documentStore)
         {
             documentStore.RegisterListener(new UniqueConstraintsStoreListener());
             documentStore.Conventions.IdentityTypeConvertors.Add(new CustomerIdentityConverter());
+            documentStore.Conventions.IdentityTypeConvertors.Add(new ProductIdentityConverter());
             base.ModifyStore(documentStore);
         }
     }

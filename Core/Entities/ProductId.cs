@@ -1,7 +1,12 @@
-﻿using System;
+﻿using Raven.Imports.Newtonsoft.Json;
+using SomeBasicRavenApp.Core.Internal;
+using System;
+using System.ComponentModel;
 
 namespace SomeBasicRavenApp.Core.Entities
 {
+    [TypeConverter(typeof(ValueTypeConverter<ProductId>))]
+    [JsonConverter(typeof(ValueTypeJsonConverter<ProductId>))]
     public struct ProductId : IEquatable<ProductId>
     {
         public readonly string Value;

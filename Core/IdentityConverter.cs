@@ -14,7 +14,7 @@ namespace SomeBasicRavenApp.Core
         public string ConvertFrom(string tag, object value, bool allowNull)
         {
             var val = (CustomerId)value;
-            if (val.Equals(CustomerId.Empty))
+            if (val.Equals(CustomerId.Empty) && allowNull)
                 return null;
             return tag + value.ToString();
         }
@@ -35,7 +35,7 @@ namespace SomeBasicRavenApp.Core
         public string ConvertFrom(string tag, object value, bool allowNull)
         {
             var val = (ProductId)value;
-            if (val.Equals(ProductId.Empty))
+            if (val.Equals(ProductId.Empty) && allowNull)
                 return null;
             return tag + value.ToString();
         }
