@@ -13,6 +13,9 @@ using SomeBasicRavenApp.Core.Transformations;
 using Raven.Client.Indexes;
 using SomeBasicRavenApp.Core.Extensions;
 using SomeBasicRavenApp.Core.Indexes;
+using Raven.Abstractions.Data;
+using System.Collections.Generic;
+using Raven.Abstractions.Connection;
 
 namespace SomeBasicRavenApp.Tests
 {
@@ -47,6 +50,23 @@ namespace SomeBasicRavenApp.Tests
                 .Where(c => c.Firstname == "Steve")
                 .ToList();
             Assert.AreEqual(2, customers.Count);
+        }
+
+        [Test]
+        public void CanGetFirstNames()
+        {
+            var facets = _session.Query<Customer, Customer_ByFirstAndLastName>()
+                .ToFacets(new List<Facet>() {
+                    new Facet() {
+                        Name="Firstname",
+                        AggregationField="Firstname",
+                        TermSortMode=FacetTermSortMode.ValueDesc,
+                        Mode=FacetMode.Default
+                    }
+                })
+                ;
+            Assert.That(facets.Results["Firstname"].Values.Select(v=>v.Range).ToArray(),
+                Is.EquivalentTo(new[] { "steve", "joe", "mike", "peter", "yuliana" }));
         }
 
         [Test]
@@ -124,7 +144,7 @@ namespace SomeBasicRavenApp.Tests
         }
 
         [Test]
-        public void CanInsertDuplicate()
+        public void CantInsertDuplicate()
         {
             var customer = new Customer
             {
@@ -134,15 +154,10 @@ namespace SomeBasicRavenApp.Tests
                 Email = "peter@sylvester.com"
             };
             _session.Store(customer);
-            WaitForIndexing(_store);
-
-            var first = _session.LoadByUniqueConstraint<Customer>(c => c.Number, 51);
-            Assert.IsNotNull(first, "first");
-            var second = _session.Load<Customer>((string) customer.Id);
-            Assert.IsNotNull(second, "second");
-            var customerWhenLoadByConstrain = _session.LoadByUniqueConstraint<Customer>(x => x.Email,
-              "peter@sylvester.com");
-            Assert.AreEqual(51, customerWhenLoadByConstrain.Number);
+            Assert.Throws<ErrorResponseException>(() =>
+            {
+                _session.SaveChanges();
+            });
         }
 
 
@@ -167,7 +182,7 @@ namespace SomeBasicRavenApp.Tests
             };
             Assert.Throws<NonUniqueObjectException>(() => _session.Store(customer_2));
             WaitForIndexing(_store);
-            var load = _session.Load<Customer>((string)customer.Id);
+            var load = _session.Load<Customer>(customer.Id);
             Assert.IsNotNull(load);
             Assert.AreEqual(customer.Lastname, load.Lastname);
             Assert.AreEqual(customer.Email, load.Email);

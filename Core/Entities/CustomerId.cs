@@ -41,7 +41,7 @@ namespace SomeBasicRavenApp.Core.Entities
                 ? Value.ToString()
                 : string.Empty;
         }
-        public static implicit operator String(CustomerId customerId)
+        public static explicit operator string(CustomerId customerId)
         {
             return customerId.Value;
         }
