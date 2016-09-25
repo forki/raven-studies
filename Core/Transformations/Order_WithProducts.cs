@@ -19,7 +19,7 @@ namespace SomeBasicRavenApp.Core.Transformations
                 orders =>
                 from order in orders
                 let products = this.Recurse<Order,Product>(order,
-                                    o=>o.Products.Select(p=>LoadDocument<Product>(p.Value)))
+                                    o=>o.Products.Select(p=>LoadDocument<Product>(p)))
                 select new Result
                 {
                     Products = products,

@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Raven.Studio.Html5.zip">
+      <Paket>True</Paket>
+    </Content>
     <Compile Include="CustomerDataTests.cs" />
     <Compile Include="DbTestsBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -138,7 +138,7 @@ namespace SomeBasicRavenApp.Tests
 
             var first = _session.LoadByUniqueConstraint<Customer>(c => c.Number, 51);
             Assert.IsNotNull(first, "first");
-            var second = _session.Load<Customer>(customer.Id);
+            var second = _session.Load<Customer>((string) customer.Id);
             Assert.IsNotNull(second, "second");
             var customerWhenLoadByConstrain = _session.LoadByUniqueConstraint<Customer>(x => x.Email,
               "peter@sylvester.com");
@@ -167,7 +167,7 @@ namespace SomeBasicRavenApp.Tests
             };
             Assert.Throws<NonUniqueObjectException>(() => _session.Store(customer_2));
             WaitForIndexing(_store);
-            var load = _session.Load<Customer>(customer.Id);
+            var load = _session.Load<Customer>((string)customer.Id);
             Assert.IsNotNull(load);
             Assert.AreEqual(customer.Lastname, load.Lastname);
             Assert.AreEqual(customer.Email, load.Email);
